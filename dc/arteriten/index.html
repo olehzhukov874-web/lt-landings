@@ -376,7 +376,7 @@ body.free .disc,body:not(.free) .nodisc{display:none}
           <span class="price-old">100 €</span>
           <span class="save-badge disc">-50%</span>
         </div>
-        <div class="proof"><span><i>👥</i>Daugiau nei 3 400 užsakymų Lietuvoje</span><span><i>↻</i>87 % užsako pakartotinai</span><span><i>★</i>4,8 · pagal 800 atsiliepimus</span></div>
+        <div class="proof"><span><i>👥</i>Daugiau nei 3 400 užsakymų Lietuvoje</span><span><i>↻</i>87 % užsako pakartotinai</span><span><i>★</i>4,8 · pagal 800 atsiliepimų</span></div>
         <p class="pricenote">Akcijos kaina galioja, kol nesibaigė esamos partijos atsargos.</p>
 
         <div class="form-card">
@@ -496,7 +496,7 @@ body.free .disc,body:not(.free) .nodisc{display:none}
   <div class="wrap">
     <div class="rv-head">
       <div><div class="eyebrow">Klientų atsiliepimai</div><h2 style="margin:0">Ką rašo čia užsisakę žmonės</h2></div>
-      <div class="rv-score"><b>4,8</b><div><div class="stars">★★★★★</div>pagal 800 atsiliepimus</div></div>
+      <div class="rv-score"><b>4,8</b><div><div class="stars">★★★★★</div>pagal 800 atsiliepimų</div></div>
       <div class="rv-dist"><div><span>5★</span><i style="width:82%"></i><b>82%</b></div><div><span>4★</span><i style="width:13%"></i><b>13%</b></div><div><span>3★</span><i style="width:5%"></i><b>5%</b></div></div>
       <span class="pill ok" style="align-self:center">↻ 87 % klientų užsako pakartotinai</span>
     </div>
@@ -754,7 +754,7 @@ body.free .disc,body:not(.free) .nodisc{display:none}
   try{ var st=+localStorage.getItem('lp_stock'); if(st>6&&st<stock) stock=st; }catch(e){}   // остаток не растёт при перезагрузке
   function rs(){ sn.textContent=stock; sn2.textContent=stock; sb.style.width=Math.max(6,(stock/stockMax)*100)+'%'; try{ localStorage.setItem('lp_stock',stock); }catch(e){} }
   rs();
-  var L={"cc": "+370", "phMin": 8, "phMax": 8, "ph0": true, "fem": "[aė]$", "t1m": "ką tik pateikė užsakymą", "t1f": "ką tik pateikė užsakymą", "t2m": "ką tik užsisakė 2 pakuotes", "t2f": "ką tik užsisakė 2 pakuotes", "agoMin": " min. atgal", "agoH": " val. atgal", "agoY": "vakar", "agoD": " d. atgal", "names": ["Jonas", "Rūta", "Tomas", "Gintarė", "Mantas", "Laura", "Darius", "Jurgita", "Vytautas", "Ona", "Marius", "Rasa", "Andrius", "Eglė", "Paulius", "Milda", "Rimantas", "Aistė", "Kęstutis", "Vaida"], "cities": ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Marijampolė", "Mažeikiai", "Jonava", "Utena", "Kėdainiai", "Telšiai", "Visaginas", "Tauragė", "Ukmergė", "Plungė", "Kretinga", "Šilutė", "Radviliškis", "Palanga"]};   // локаль тостов/дат/телефона (генерится сборкой из i18n)
+  var L={"cc": "+370", "phMin": 8, "phMax": 8, "ph0": true, "fem": "[aė]$", "t1m": "ką tik pateikė užsakymą", "t1f": "ką tik pateikė užsakymą", "t2m": "ką tik užsisakė 2 pakuotes", "t2f": "ką tik užsisakė 2 pakuotes", "agoMin": "prieš {n} min.", "agoH": "prieš {n} val.", "agoY": "vakar", "agoD": "prieš {n} d.", "names": ["Jonas", "Rūta", "Tomas", "Gintarė", "Mantas", "Laura", "Darius", "Jurgita", "Vytautas", "Ona", "Marius", "Rasa", "Andrius", "Eglė", "Paulius", "Milda", "Rimantas", "Aistė", "Kęstutis", "Vaida"], "cities": ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Marijampolė", "Mažeikiai", "Jonava", "Utena", "Kėdainiai", "Telšiai", "Visaginas", "Tauragė", "Ukmergė", "Plungė", "Kretinga", "Šilutė", "Radviliškis", "Palanga"]};   // локаль тостов/дат/телефона (генерится сборкой из i18n)
   var NAMES=L.names, CITIES=L.cities;
   function drop(){
     if(stock>6){
@@ -801,8 +801,9 @@ body.free .disc,body:not(.free) .nodisc{display:none}
   var AGO=[14,42,96,180,260,420];   // первые шесть — свежие, дальше растёт плавно (отзывов теперь 72)
   Array.prototype.forEach.call(document.querySelectorAll('.ago'),function(el){
     var i=+el.getAttribute('data-i'), m=(i<AGO.length?AGO[i]:Math.round(600+i*i*3.2+i*180)), t;
-    if(m<60) t=m+L.agoMin; else if(m<1440) t=Math.round(m/60)+L.agoH;
-    else if(m<2880) t=L.agoY; else t=Math.round(m/1440)+L.agoD;
+    var agoF=function(n,s){return s.indexOf('{n}')>=0?s.replace('{n}',n):n+s;};   // «vor {n} Min.» / «{n} min temu»
+    if(m<60) t=agoF(m,L.agoMin); else if(m<1440) t=agoF(Math.round(m/60),L.agoH);
+    else if(m<2880) t=L.agoY; else t=agoF(Math.round(m/1440),L.agoD);
     el.textContent=t;
   });
 
